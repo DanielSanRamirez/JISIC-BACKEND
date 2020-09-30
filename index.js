@@ -25,6 +25,8 @@ dbConnection();
 app.use(express.static('public'));
 
 // Rutas
+app.use('/api/participantes', require('./routes/participantes'));
+app.use('/api/paises', require('./routes/paises'));
 
 // Si no encuentra ruta
 app.get('*', (req, res) => {
