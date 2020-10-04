@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const PaisSchema = Schema({
+const ProductoSchema = Schema({
     nombre: {
         type: String,
         require: true
@@ -9,22 +9,16 @@ const PaisSchema = Schema({
         type: String,
         require: true
     },
-    iso3: {
-        type: String,
-        require: true
-    },
-    phone_code: {
-        type: String,
+    costo: {
+        type: Number,
         require: true
     }
-}, {
-    collection: 'paises' // Se coloca esta propiedad ya que mongo no puede poner plural 'es' solo 's'
 });
 
 // Este método me sirve para poder cambiar de _id a uid en la presentación de datos
-PaisSchema.method('toJSON', function() {
+ProductoSchema.method('toJSON', function() {
     const {__v, ...object} = this.toObject();
     return object;
 });
 
-module.exports = model('Pais', PaisSchema);
+module.exports = model('Producto', ProductoSchema);
