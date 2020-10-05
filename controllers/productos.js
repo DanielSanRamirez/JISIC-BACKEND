@@ -40,7 +40,7 @@ const crearProducto = async (req, res = response) => {
         const producto = new Producto(req.body);
 
         await producto.save();
-
+        
         res.json({
             ok: true,
             producto
