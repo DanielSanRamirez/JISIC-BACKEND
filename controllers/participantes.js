@@ -1,6 +1,8 @@
 // Importación para tener las funciones del res
 const { response } = require('express');
 
+const sendEmail = require('../emails/pre-inscrption');
+
 // Impotación del modelo
 const Participante = require('../models/participante');
 
@@ -46,6 +48,8 @@ const crearParticipante = async (req, res = response) => {
         const participante = new Participante(req.body);
 
         await participante.save();
+
+        sendEmail.sendEmail(participante);
 
         res.json({
             ok: true,
