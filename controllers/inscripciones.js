@@ -3,6 +3,7 @@ const { response } = require('express');
 
 // Impotación del modelo
 const Inscripcion = require('../models/inscripcion');
+const { fileUpload } = require('./uploads');
 
 /*const getParticipantes = async (req, res = response) => {
 
@@ -29,7 +30,7 @@ const Inscripcion = require('../models/inscripcion');
 const crearInscripcion = async (req, res = response) => {
 
     // Obtener datos del body de la petición
-    const { participante, producto, tipoIdentificacion, identificacion, img, estado } = req.body;
+    const { participante, producto, tipoIdentificacion, identificacion, costoTotal } = req.body;
 
     try {
 

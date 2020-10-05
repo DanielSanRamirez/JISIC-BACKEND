@@ -19,6 +19,10 @@ const InscripcionSchema = Schema({
         type: String,
         require: true
     },
+    costoTotal: {
+        type: Number,
+        require: true
+    },
     img: {
         type: String,
     },
