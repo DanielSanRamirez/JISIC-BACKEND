@@ -29,6 +29,7 @@ app.use('/api/participantes', require('./routes/participantes'));
 app.use('/api/paises', require('./routes/paises'));
 app.use('/api/productos', require('./routes/productos'));
 app.use('/api/uploads', require('./routes/uploads'));
+app.use('/api/inscripciones', require('./routes/inscripciones'));
 
 // Si no encuentra ruta
 app.get('*', (req, res) => {
