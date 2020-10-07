@@ -9,7 +9,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 // Importación de los controllers
-const { getParticipantes, crearParticipante, actualizarParticipante } = require('../controllers/participantes');
+const { getParticipantes, crearParticipante, actualizarParticipante, actualizarEstadoParticipante } = require('../controllers/participantes');
 
 // Importación de middlewares
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -39,5 +39,10 @@ router.put('/:id', [
     check('pais', 'El país es obligatorio').not().isEmpty(),
     validarCampos
 ], actualizarParticipante);
+
+router.put('/estado/:id', [
+    check('estado', 'El estado es obligatorio').not().isEmpty(),
+    validarCampos
+], actualizarEstadoParticipante);
 
 module.exports = router;

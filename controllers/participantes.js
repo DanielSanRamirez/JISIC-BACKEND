@@ -116,8 +116,42 @@ const actualizarParticipante = async (req, res = response) => {
 
 };
 
+const actualizarEstadoParticipante = async (req, res = response) => {
+    
+    // Se obtiene el id del participante
+    const uid = req.params.id;
+
+    try {
+
+        // Busca en la BD el usuario con el uid
+        const participanteDB = await Participante.findById(uid);
+
+        if (!participanteDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe un participante con ese id'
+            });
+        };
+
+        const participanteActualizado = await Participante.findByIdAndUpdate(uid, req.body, { new: true });
+
+        res.json({
+            ok: true,
+            participante: participanteActualizado
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }
+}
+
 module.exports = {
     getParticipantes,
     crearParticipante,
-    actualizarParticipante
+    actualizarParticipante,
+    actualizarEstadoParticipante
 }

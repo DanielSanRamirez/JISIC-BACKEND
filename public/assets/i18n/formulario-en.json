@@ -29,7 +29,7 @@
         "EMAILMSG": "* Email must be correct and is required",
         "COUNTRYMSG": "* The country is required",
         "IDTYPEMSG": "* ID Type is required",
-        "IDENTIFICATIONMSG": "* Identification can only be numbers and is required",
+        "IDENTIFICATIONMSG": "* Identification can only be numbers, must have 10 digits and is required",
         "PASAPORTEMSG": "* Passport can only be letters, numbers and is required"
     }
 }

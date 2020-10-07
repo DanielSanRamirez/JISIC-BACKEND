@@ -22,14 +22,14 @@
         "TOTALCOST": "TOTAL A PAGAR: $ ",
         "ADD": "Agregar",
         "NAMESMSG": "* El nombre sólo puede ser letras y es obligatorio",
-        "LASTNAMESMSG": "* El apellido sólo puede ser letras es obligatorio",
+        "LASTNAMESMSG": "* El apellido sólo puede ser letras y es obligatorio",
         "ADDRESSMSG": "* La dirección es obligatoria",
         "CODEPHONEMSG": "* El código de teléfono es obligatorio",
         "PHONEMSG": "* El teléfono sólo puede ser números y es obligatorio",
         "EMAILMSG": "* El correo electrónico debe ser correcto y es obligatorio",
         "COUNTRYMSG": "* El país es obligatorio",
         "IDTYPEMSG": "* El tipo de identificación es obligatorio",
-        "IDENTIFICATIONMSG": "* La identificación sólo puede ser números y es obligatoria",
+        "IDENTIFICATIONMSG": "* La identificación sólo puede ser números, debe tener 10 dígitos y es obligatoria",
         "PASAPORTEMSG": "* El pasaporte sólo puede tener letras, números y es obligatorio"
     }
 }
