@@ -31,7 +31,11 @@ const ParticipanteSchema = Schema({
         require: true,
         type: Schema.Types.ObjectId,
         ref: 'Pais'
-    }
+    },
+    estado: {
+        type: Boolean,
+        default: false
+    },
 });
 
 // Este método me sirve para poder cambiar de _id a uid en la presentación de datos
