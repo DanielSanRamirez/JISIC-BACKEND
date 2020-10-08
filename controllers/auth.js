@@ -9,7 +9,7 @@ const bcryptjs = require('bcryptjs');
 // Importación para generar JWT
 const { generarJWT } = require('../helpers/jwt');
 
-//const { getMenuFrontEnd } = require('../helpers/menu-frontend');
+const { getMenuFrontEnd } = require('../helpers/menu-frontend');
 
 const login = async (req, res = response) => {
 
@@ -44,13 +44,21 @@ const login = async (req, res = response) => {
             });
         }
 
+        // Verificar estado
+        if (!usuarioDB.estado) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Su usuario está inactivo, hable con el administrador'
+            })
+        }
+
         // Generar el TOKEN -JWT
         const token = await generarJWT(usuarioDB.id);
 
         res.status(200).json({
             ok: true,
             token,
-            //menu: getMenuFrontEnd(usuarioDB.role)
+            menu: getMenuFrontEnd(usuarioDB.perfil)
         });
     } catch (error) {
         console.log(error);
@@ -61,6 +69,25 @@ const login = async (req, res = response) => {
     }
 };
 
+const renewToken = async (req, res = response) => {
+    
+    const uid = req.uid;
+
+    // Generar el TOKEN -JWT
+    const token = await generarJWT(uid);
+
+    // Obtener el usuario por uid
+    const usuario = await Usuario.findById(uid);
+
+    res.json({
+        ok: true,
+        token,
+        usuario,
+        menu: getMenuFrontEnd(usuario.perfil)
+    });
+}
+
 module.exports = {
-    login
+    login,
+    renewToken
 }

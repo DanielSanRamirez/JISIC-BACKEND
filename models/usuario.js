@@ -13,6 +13,10 @@ const UsuarioSchema = Schema({
         type: String,
         require: true
     },
+    nombres: {
+        type: String,
+        require: true
+    },
     estado: {
         type: Boolean,
         default: true

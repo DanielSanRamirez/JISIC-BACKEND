@@ -10,7 +10,7 @@ const Usuario = require('../models/usuario');
 const crearUsuario = async (req, res = response) => {
 
     // Obtener datos del body de la petición
-    const { nombre, password, perfil } = req.body;
+    const { nombre, password, perfil, nombres } = req.body;
 
     try {
 
