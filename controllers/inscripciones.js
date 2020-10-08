@@ -3,6 +3,8 @@ const { response } = require('express');
 
 // Impotación del modelo
 const Inscripcion = require('../models/inscripcion');
+const Producto = require('../models/producto');
+
 const { fileUpload } = require('./uploads');
 
 /*const getParticipantes = async (req, res = response) => {
@@ -30,12 +32,20 @@ const { fileUpload } = require('./uploads');
 const crearInscripcion = async (req, res = response) => {
 
     // Obtener datos del body de la petición
-    const { participante, producto, tipoIdentificacion, identificacion, costoTotal } = req.body;
+    const { participante, producto, tipoIdentificacion, identificacion, costoTotal, estado } = req.body;
 
     try {
 
         // Consulta en la BD si existe el producto y el participante
         const existeInscripcion = await Inscripcion.findOne({ participante, producto });
+
+        const _id = producto;
+
+        const esProfesional = await Producto.findById({_id});
+
+        if (esProfesional.nombre === 'Profesionales y Profesores Externos') {
+            req.body.estado = true;
+        }
 
         if (existeInscripcion) {
             return res.status(404).json({

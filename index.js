@@ -30,6 +30,8 @@ app.use('/api/paises', require('./routes/paises'));
 app.use('/api/productos', require('./routes/productos'));
 app.use('/api/uploads', require('./routes/uploads'));
 app.use('/api/inscripciones', require('./routes/inscripciones'));
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
 
 // Si no encuentra ruta
 app.get('*', (req, res) => {

@@ -49,7 +49,7 @@ exports.sendEmail = async function (req, res) {
                     <p>Estos datos serán usados para la emisión de certificados de participación en el evento.</p>
                     <p>Para activar su cuenta, pulse el botón de abajo para verificar su correo electrónico:</p>
                     
-                    <a href="https://jisic2021.herokuapp.com/email-confirmation/${req._id}" title="Ve a completar tu registro">
+                    <a href="http://localhost:4200/email-confirmation/${req._id}" title="Ve a completar tu registro">
                         <img src="https://www.flaticon.es/svg/static/icons/svg/257/257198.svg" alt="HTML tutorial" style="width:200px;height:auto;border:0;">
                     </a>
                     
