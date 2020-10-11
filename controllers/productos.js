@@ -17,6 +17,26 @@ const getProductos = async (req, res = response) => {
 
 };
 
+const getProductosPaginado = async (req, res = response) => {
+
+    const desde = Number(req.query.desde) || 0;
+
+    const [productos, total] = await Promise.all([
+        Producto
+            .find({})
+            .skip(desde)
+            .limit(10),
+
+        Producto.countDocuments()
+    ]);
+
+    res.json({
+        ok: true,
+        productos,
+        total
+    });
+};
+
 const crearProducto = async (req, res = response) => {
 
     // Obtener datos del body de la petición
@@ -58,5 +78,6 @@ const crearProducto = async (req, res = response) => {
 
 module.exports = {
     getProductos,
-    crearProducto
+    crearProducto,
+    getProductosPaginado
 }
