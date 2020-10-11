@@ -5,10 +5,12 @@
 const { Router } = require('express');
 const { check } = require('express-validator')
 const { validarCampos } = require('../middlewares/validar-campos');
-const { crearUsuario } = require('../controllers/usuarios');
+const { crearUsuario, getUsuariosPaginado } = require('../controllers/usuarios');
 //const { validarJWT, validarADMIN_ROLE, validarADMIN_ROLE_o_MismoUsuario } = require('../middlewares/validar-jwt');
 
 const router = Router();
+
+router.get('/pag/', getUsuariosPaginado);
 
 router.post('/', [
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),

@@ -48,6 +48,27 @@ const crearUsuario = async (req, res = response) => {
 
 };
 
+const getUsuariosPaginado = async (req, res = response) => {
+
+    const desde = Number(req.query.desde) || 0;
+
+    const [usuarios, total] = await Promise.all([
+        Usuario
+            .find({})
+            .skip(desde)
+            .limit(10),
+
+        Usuario.countDocuments()
+    ]);
+
+    res.json({
+        ok: true,
+        usuarios,
+        total
+    });
+};
+
 module.exports = {
-    crearUsuario
+    crearUsuario,
+    getUsuariosPaginado
 }
