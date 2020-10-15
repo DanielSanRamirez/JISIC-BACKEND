@@ -38,7 +38,7 @@ exports.sendEmail = async function (req, res) {
                     </style>
                 </head>
                 <body>
-                    <img class="imagenBanner" src="https://jisic.epn.edu.ec/images/jisic2019/JISIC-2019-banner-tipo-epn2-FINAL.jpg" alt="Banner de las JISIC">
+                    <img class="imagenBanner" src="https://jisic.epn.edu.ec/images/inscripcion/bannerEmail.jpg" alt="Banner de las JISIC">
 
                     <h1>Bienvenido(a),</h1>
  
@@ -50,7 +50,7 @@ exports.sendEmail = async function (req, res) {
                     <p>Para activar su cuenta, pulse el botón de abajo para verificar su correo electrónico:</p>
                     
                     <a href="http://localhost:4200/email-confirmation/${req._id}" title="Ve a completar tu registro">
-                        <img src="https://www.flaticon.es/svg/static/icons/svg/257/257198.svg" alt="HTML tutorial" style="width:200px;height:auto;border:0;">
+                        <img src="https://jisic.epn.edu.ec/images/inscripcion/ActivarCuenta.png" alt="HTML tutorial" style="width:200px;height:auto;border:0;">
                     </a>
                     
 
