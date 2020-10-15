@@ -21,8 +21,6 @@ const router = Router();
 router.post('/', [
     check('participante', 'El id del Participante es obligatorio').not().isEmpty(),
     check('producto', 'El id del Producto es obligatorio').not().isEmpty(),
-    check('tipoIdentificacion', 'El tipo de identificación es obligatorio').not().isEmpty(),
-    check('identificacion', 'La identificación es obligatoria').not().isEmpty(),
     check('costoTotal', 'El costo total es obligatorio').not().isEmpty(),
     validarCampos
 ], crearInscripcion);

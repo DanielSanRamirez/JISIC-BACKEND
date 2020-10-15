@@ -11,13 +11,8 @@ const InscripcionSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Producto'
     },
-    tipoIdentificacion: {
+    institucion: {
         type: String,
-        require: true
-    },
-    identificacion: {
-        type: String,
-        require: true
     },
     costoTotal: {
         type: Number,

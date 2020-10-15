@@ -26,6 +26,8 @@ router.post('/', [
     check('telefono', 'El telefono es obligatorio').not().isEmpty(),
     check('email', 'El correo electrónico es obligatorio').isEmail(),
     check('pais', 'El país es obligatorio').not().isEmpty(),
+    check('tipoIdentificacion', 'El tipo de identificacion es obligatorio').not().isEmpty(),
+    check('identificacion', 'La identificacion es obligatoria').not().isEmpty(),
     validarCampos
 ], crearParticipante);
 

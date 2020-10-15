@@ -32,6 +32,14 @@ const ParticipanteSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Pais'
     },
+    tipoIdentificacion: {
+        require: true,
+        type: String,
+    },
+    identificacion: {
+        require: true,
+        type: String,
+    },
     estado: {
         type: Boolean,
         default: false

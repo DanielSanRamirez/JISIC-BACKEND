@@ -32,7 +32,7 @@ const { fileUpload } = require('./uploads');
 const crearInscripcion = async (req, res = response) => {
 
     // Obtener datos del body de la petición
-    const { participante, producto, tipoIdentificacion, identificacion, costoTotal, estado } = req.body;
+    const { participante, producto, institucion, costoTotal, estado } = req.body;
 
     try {
 

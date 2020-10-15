@@ -31,7 +31,7 @@ const getParticipantes = async (req, res = response) => {
 const crearParticipante = async (req, res = response) => {
 
     // Obtener datos del body de la petición
-    const { nombres, apellidos, direccion, codTelefono, telefono, email, pais } = req.body;
+    const { nombres, apellidos, direccion, codTelefono, telefono, email, pais, tipoIdentificacion, identificacion } = req.body;
 
     try {
 
@@ -148,6 +148,26 @@ const actualizarEstadoParticipante = async (req, res = response) => {
         });
     }
 }
+
+const getParticipantesPaginado = async (req, res = response) => {
+
+    const desde = Number(req.query.desde) || 0;
+
+    const [participantes, total] = await Promise.all([
+        Participante
+            .find({estado: 'false'})
+            .skip(desde)
+            .limit(10),
+
+        Participante.countDocuments()
+    ]);
+
+    res.json({
+        ok: true,
+        participantes,
+        total
+    });
+};
 
 module.exports = {
     getParticipantes,
