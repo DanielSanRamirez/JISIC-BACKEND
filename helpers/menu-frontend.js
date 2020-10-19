@@ -19,6 +19,7 @@ const getMenuFrontEnd = (perfil = 'USER_SECRE') => {
             { titulo: 'Productos', url: '/admin/dashboard/productos' },
             { titulo: 'Usuarios', url: '/admin/dashboard/usuarios' },
             { titulo: 'Inscripción', url: '/admin/dashboard/inscripciones' },
+            { titulo: 'Por Pagar', url: '/admin/dashboard/por-pagar' },
             { titulo: 'Pre-registro', url: '/admin/dashboard/pre-registros' },
         )
 
