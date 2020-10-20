@@ -4,30 +4,53 @@ const { response } = require('express');
 // Impotación del modelo
 const Inscripcion = require('../models/inscripcion');
 const Producto = require('../models/producto');
+const Pago = require('../models/pago');
+const Participante = require('../models/participante');
 
 const { fileUpload } = require('./uploads');
 
-/*const getParticipantes = async (req, res = response) => {
+const getInscripcionPaginado = async (req, res = response) => {
 
-    // Definir el valor para traer los datos
     const desde = Number(req.query.desde) || 0;
 
-    const [participantes, total] = await Promise.all([
-        Participante.find({}, 'nombres apellidos direccion codTelefono telefono email pais')
-            .skip(desde)
-            .limit(10)
-            .populate('pais', 'nombre')
-            .populate('codTelefono', 'phone_code'),
-        Participante.countDocuments()
+    let inscripciones = [];
+
+    const [participantes] = await Promise.all([
+        Participante
+            .find({ estado: true })
     ]);
+
+    const [inscripcion] = await Promise.all([
+        Inscripcion
+            .find({ estado: true, estadoRecibo: true }).populate('participante')
+    ]);
+
+    const [pago] = await Promise.all([
+        Pago
+            .find({ estado: false }).populate('inscripcion')
+    ])
+
+    pago.forEach(elementoPago => {
+        inscripcion.forEach(element => {
+            if (String(elementoPago.inscripcion._id) === String(element._id)) {
+                participantes.forEach(elementos => {
+                    if (String(element.participante._id) === String(elementos._id)) {
+                        inscripciones.push(elementoPago);
+                    }
+                });    
+            }
+        });
+    });
+
+
+    const inscripcionesPag = inscripciones.slice(desde, desde + 10);
 
     res.json({
         ok: true,
-        participantes,
-        total
+        inscripcionesPag,
+        total: inscripciones.length
     });
-
-};*/
+};
 
 const crearInscripcion = async (req, res = response) => {
 
@@ -41,7 +64,7 @@ const crearInscripcion = async (req, res = response) => {
 
         const _id = producto;
 
-        const esProfesional = await Producto.findById({_id});
+        const esProfesional = await Producto.findById({ _id });
 
         if (esProfesional.nombre === 'Profesionales y Profesores Externos') {
             req.body.estado = true;
@@ -124,7 +147,7 @@ const crearInscripcion = async (req, res = response) => {
 };*/
 
 module.exports = {
-    //getParticipantes,
-    crearInscripcion,
+    getInscripcionPaginado,
+    crearInscripcion
     //actualizarParticipante
 }

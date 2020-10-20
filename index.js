@@ -32,6 +32,9 @@ app.use('/api/uploads', require('./routes/uploads'));
 app.use('/api/inscripciones', require('./routes/inscripciones'));
 app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/login', require('./routes/auth'));
+app.use('/api/pre-registro', require('./routes/pre-registro'));
+app.use('/api/pre-inscripcion', require('./routes/pre-inscripcion'));
+app.use('/api/por-pagar', require('./routes/por-pagar'));
 
 // Si no encuentra ruta
 app.get('*', (req, res) => {

@@ -15,12 +15,14 @@ const getMenuFrontEnd = (perfil = 'USER_SECRE') => {
     }
 
     if (perfil === 'USER_ADMIN') {
+        menu[0].menu.pop();
         menu[0].menu.unshift(
+            { titulo: 'Pre-registro', url: '/admin/dashboard/pre-registros' },
+            { titulo: 'Pre-inscripción', url: '/admin/dashboard/pre-inscripciones' },
+            { titulo: 'Por Pagar', url: '/admin/dashboard/por-pagar' },
+            { titulo: 'Inscripción', url: '/admin/dashboard/inscripciones' },
             { titulo: 'Productos', url: '/admin/dashboard/productos' },
             { titulo: 'Usuarios', url: '/admin/dashboard/usuarios' },
-            { titulo: 'Inscripción', url: '/admin/dashboard/inscripciones' },
-            { titulo: 'Por Pagar', url: '/admin/dashboard/por-pagar' },
-            { titulo: 'Pre-registro', url: '/admin/dashboard/pre-registros' },
         )
 
     }
