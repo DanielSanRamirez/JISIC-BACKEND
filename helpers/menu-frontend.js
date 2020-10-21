@@ -10,7 +10,7 @@ const getMenuFrontEnd = (perfil = 'USER_SECRE') => {
     if (perfil === 'USER_TESO') {
         menu[0].menu.pop();
         menu[0].menu.unshift(
-            { titulo: 'Inscripción', url: '/admin/dashboard/inscripciones' }
+            { titulo: 'Pagos', url: '/admin/dashboard/pagos' },
         )
     }
 
