@@ -17,23 +17,30 @@ const getProductos = async (req, res = response) => {
 
 };
 
-const getProductosPaginado = async (req, res = response) => {
+const getProductosPaginado = (req, res = response) => {
 
-    const desde = Number(req.query.desde) || 0;
+    const desde = Number(req.query.desde) || 1;
 
-    const [productos, total] = await Promise.all([
-        Producto
-            .find({})
-            .skip(desde)
-            .limit(10),
+    var option = {
+        page: desde,
+        limit: 10
+    };
 
-        Producto.countDocuments()
-    ]);
-
-    res.json({
-        ok: true,
-        productos,
-        total
+    Producto.paginate({}, option, (err, productos) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!productos) {
+                res.status(404).send({ message: 'No se encontro artistas' });
+            } else {
+                return res.json({
+                    ok: true,
+                    totalPages: productos.totalPages,
+                    productos: productos.docs,
+                });
+            }
+        }
     });
 };
 
@@ -50,10 +57,17 @@ const crearProducto = async (req, res = response) => {
         // Consulta en la BD si existe el name
         const existeName = await Producto.findOne({ name });
 
-        if (existeNombre || existeName) {
+        if (existeNombre) {
             return res.status(404).json({
                 ok: false,
                 msg: 'Ya existe un producto con el mismo nombre'
+            });
+        }
+
+        if (existeName) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Ya existe un producto con el mismo name'
             });
         }
 
