@@ -133,8 +133,12 @@ const actualizarUsuario = async (req, res = response) => {
         };
 
         // Encriptar contraseña
-        const salt = bcryptjs.genSaltSync();
-        req.body.password = bcryptjs.hashSync(password, salt);
+        if (req.body.password === '') {
+            req.body.password = usuarioDB.password;
+        } else {
+            const salt = bcryptjs.genSaltSync();
+            req.body.password = bcryptjs.hashSync(password, salt);
+        }
 
         const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, req.body, { new: true });
 
