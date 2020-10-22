@@ -50,21 +50,27 @@ const crearUsuario = async (req, res = response) => {
 
 const getUsuariosPaginado = async (req, res = response) => {
 
-    const desde = Number(req.query.desde) || 0;
+    const desde = Number(req.query.desde) || 1;
 
-    const [usuarios, total] = await Promise.all([
-        Usuario
-            .find({})
-            .skip(desde)
-            .limit(10),
+    var option = {
+        page: desde,
+        limit: 10
+    };
 
-        Usuario.countDocuments()
-    ]);
-
-    res.json({
-        ok: true,
-        usuarios,
-        total
+    Usuario.paginate({}, option, (err, usuarios) => {
+        if (err) {
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!usuarios) {
+                res.status(404).send({ message: 'No se encontro Usuario' });
+            } else {
+                return res.json({
+                    ok: true,
+                    totalPages: usuarios.totalPages,
+                    usuarios: usuarios.docs,
+                });
+            }
+        }
     });
 };
 

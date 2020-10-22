@@ -28,11 +28,10 @@ const getProductosPaginado = (req, res = response) => {
 
     Producto.paginate({}, option, (err, productos) => {
         if (err) {
-            console.log(err);
             res.status(500).send({ message: 'Error en la petición' });
         } else {
             if (!productos) {
-                res.status(404).send({ message: 'No se encontro artistas' });
+                res.status(404).send({ message: 'No se encontro Producto' });
             } else {
                 return res.json({
                     ok: true,

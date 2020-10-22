@@ -1,5 +1,8 @@
 const { Schema, model } = require('mongoose');
 
+// Importación para paginar
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 const UsuarioSchema = Schema({
     nombre: {
         type: String,
@@ -22,6 +25,8 @@ const UsuarioSchema = Schema({
         default: true
     }
 });
+
+UsuarioSchema.plugin(mongoosePaginate);
 
 // Este método me sirve para poder cambiar de _id a uid en la presentación de datos
 UsuarioSchema.method('toJSON', function() {
