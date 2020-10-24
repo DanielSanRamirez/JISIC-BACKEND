@@ -1,10 +1,12 @@
 // Importación para tener las funciones del res
 const { response } = require('express');
 
-const sendEmail = require('../emails/pre-inscrption');
+const sendEmailPreRegistro = require('../emails/pre-inscrption');
+const sendEmailLlenarDatosFactura = require('../emails/llenar-datos-factura');
 
 // Impotación del modelo
 const Participante = require('../models/participante');
+const Inscripcion = require('../models/inscripcion');
 
 const getParticipantes = async (req, res = response) => {
 
@@ -49,7 +51,7 @@ const crearParticipante = async (req, res = response) => {
 
         await participante.save();
 
-        sendEmail.sendEmail(participante);
+        sendEmailPreRegistro.sendEmail(participante);
 
         res.json({
             ok: true,
@@ -117,21 +119,33 @@ const actualizarParticipante = async (req, res = response) => {
 };
 
 const actualizarEstadoParticipante = async (req, res = response) => {
-    
+
     // Se obtiene el id del participante
     const uid = req.params.id;
+    const datosEmail = [];
 
     try {
 
         // Busca en la BD el usuario con el uid
         const participanteDB = await Participante.findById(uid);
-
+        
         if (!participanteDB) {
             return res.status(404).json({
                 ok: false,
                 msg: 'No existe un participante con ese id'
             });
         };
+
+        // Comprobar cuantas inscripciones están en falso 
+        const inscripcionesParticipante = await Inscripcion.find({ participante: uid, estado: false });
+        
+        if (inscripcionesParticipante.length === 0) {
+            
+            const inscripcion = await Inscripcion.findOne({participante: uid, estado: true});
+            datosEmail.push(participanteDB);
+            datosEmail.push(inscripcion.costoTotal);
+            sendEmailLlenarDatosFactura.sendEmail(datosEmail);
+        }
 
         const participanteActualizado = await Participante.findByIdAndUpdate(uid, req.body, { new: true });
 
@@ -148,26 +162,6 @@ const actualizarEstadoParticipante = async (req, res = response) => {
         });
     }
 }
-
-const getParticipantesPaginado = async (req, res = response) => {
-
-    const desde = Number(req.query.desde) || 0;
-
-    const [participantes, total] = await Promise.all([
-        Participante
-            .find({estado: 'false'})
-            .skip(desde)
-            .limit(10),
-
-        Participante.countDocuments()
-    ]);
-
-    res.json({
-        ok: true,
-        participantes,
-        total
-    });
-};
 
 module.exports = {
     getParticipantes,

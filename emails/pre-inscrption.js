@@ -1,19 +1,11 @@
-var nodemailer = require('nodemailer');
+var {transporterEmails} = require('./transporte-emails');
+
 // email sender function
 exports.sendEmail = async function (req, res) {
+
     // Definimos el transporter
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.office365.com',
-        port: 587,
-        secure: false,
-        auth: {
-            user: 'jisic@epn.edu.ec',
-            pass: 'JT2016PFvf'
-        },
-        tls: {
-            ciphers: 'SSLv3'
-        }
-    });
+    const transporter = transporterEmails;
+
     // Definimos el email //https://jisic2021.herokuapp.com/email-confirmation //http://localhost:4200/email-confirmation
     var mailOptions = {
         from: "'JISIC' <jisic@epn.edu.ec>",
@@ -49,8 +41,8 @@ exports.sendEmail = async function (req, res) {
                     <p>These data will be used to issuance of participation certificates in the event.</p>
                     <p>To continue, press the button below to verify your email:</p>
                     
-                    <a href="http://localhost:4200/email-confirmation/${req._id}" title="Ve a completar tu registro">
-                        <img src="https://jisic.epn.edu.ec/images/inscripcion/verifyEmail.png" alt="HTML tutorial" style="width:200px;height:auto;border:0;">
+                    <a href="http://localhost:4200/email-confirmation/${req._id}" title="Registro Completo">
+                        <img src="https://jisic.epn.edu.ec/images/inscripcion/verifyEmail.png" alt="Verification email button" style="width:200px;height:auto;border:0;">
                     </a>
                     
 
