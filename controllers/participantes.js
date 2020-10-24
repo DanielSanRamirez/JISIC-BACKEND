@@ -148,6 +148,14 @@ const actualizarEstadoParticipante = async (req, res = response) => {
         }
 
         const participanteActualizado = await Participante.findByIdAndUpdate(uid, req.body, { new: true });
+        const inscripciones = await Inscripcion.find({participante: uid});
+        inscripciones.forEach(async element => {
+            element.estadoParticipante = true;
+            console.log(element.estadoParticipante);
+            console.log(element._id);
+            console.log(element);
+            await Inscripcion.findByIdAndUpdate(element._id, element, {new: true});
+        });
 
         res.json({
             ok: true,

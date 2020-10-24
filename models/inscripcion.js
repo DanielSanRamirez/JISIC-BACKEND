@@ -1,5 +1,8 @@
 const { Schema, model } = require('mongoose');
 
+// Importación para paginar
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 const InscripcionSchema = Schema({
     participante: {
         require: true,
@@ -24,10 +27,16 @@ const InscripcionSchema = Schema({
     estado: {
         type: Boolean,
         default: false
+    },
+    estadoParticipante: {
+        type: Boolean,
+        default: false
     }
 }, {
     collection: 'inscripciones' // Se coloca esta propiedad ya que mongo no puede poner plural 'es' solo 's'
 });
+
+InscripcionSchema.plugin(mongoosePaginate);
 
 // Este método me sirve para poder cambiar de _id a uid en la presentación de datos
 InscripcionSchema.method('toJSON', function() {
