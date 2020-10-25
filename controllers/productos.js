@@ -126,13 +126,12 @@ const actualizarProducto = async (req, res = response) => {
 
         // Actualización
         const { nombre, name, ...campos } = req.body;
-        const regexNombre = new RegExp(nombre, 'i');
-        const regexName = new RegExp(name, 'i');
 
         if (productoBD.nombre.toLowerCase() !== nombre.toLowerCase()) {
             const existeNombre = await Producto.findOne({
-                nombre: regexNombre
+                nombre: nombre
             });
+            console.log(existeNombre);
             if (existeNombre) {
                 return res.status(400).json({
                     ok: false,
@@ -143,7 +142,7 @@ const actualizarProducto = async (req, res = response) => {
 
         if (productoBD.name.toLowerCase() !== name.toLowerCase()) {
             const existeName = await Producto.findOne({
-                name: regexName
+                name: name
             });
             if (existeName) {
                 return res.status(400).json({
