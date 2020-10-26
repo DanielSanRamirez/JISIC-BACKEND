@@ -23,7 +23,7 @@ const router = Router();
 
 router.get('/', getPreRegistroPaginado);
 
-router.get('/coleccion/:dato/:busqueda', getDocumentosPreRegistro)
+router.get('/coleccion/:dato/:busqueda', getDocumentosPreRegistro);
 
 router.put('/:id', [
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),
