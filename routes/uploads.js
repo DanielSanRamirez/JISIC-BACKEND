@@ -9,7 +9,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 // Importación del controlador
-const { fileUpload, retornaImagen } = require('../controllers/uploads');
+const { fileUpload, retornaImagen, downloadImagen } = require('../controllers/uploads');
 
 // Importación para subir archivos
 const expressFileUpload = require('express-fileupload');
@@ -21,5 +21,7 @@ router.use(expressFileUpload());
 router.put('/:tipo/:id', fileUpload);
 
 router.get('/:tipo/:archivo', retornaImagen);
+
+router.get('/descargar/:tipo/:archivo', downloadImagen);
 
 module.exports = router;

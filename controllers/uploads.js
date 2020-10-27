@@ -88,7 +88,21 @@ const retornaImagen = (req, res = response) => {
 
 }
 
+const downloadImagen = (req, res = response) => {
+
+    const tipo = req.params.tipo;
+    const archivo = req.params.archivo;
+
+    const pathImg = path.join(__dirname, `../uploads/${tipo}/${archivo}`);
+    res.download(pathImg, archivo, (err) => {
+        if (err) {
+            console.log(err);
+        }
+    })
+}
+
 module.exports = {
     fileUpload,
-    retornaImagen
+    retornaImagen,
+    downloadImagen
 }
