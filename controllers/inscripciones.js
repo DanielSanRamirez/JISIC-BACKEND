@@ -37,7 +37,7 @@ const getInscripcionPaginado = async (req, res = response) => {
                     if (String(element.participante._id) === String(elementos._id)) {
                         inscripciones.push(elementoPago);
                     }
-                });    
+                });
             }
         });
     });
@@ -96,44 +96,24 @@ const crearInscripcion = async (req, res = response) => {
 
 };
 
-/*const actualizarParticipante = async (req, res = response) => {
+const getInscripcion = async (req, res = response) => {
 
-    // Se obtiene el id del participante
-    const uid = req.params.id;
+    const id = req.query.id;
 
     try {
 
-        // Busca en la BD el usuario con el uid
-        const participanteDB = await Participante.findById(uid);
+        const inscripcionDB = await Inscripcion.findById(id).populate('participante').populate('producto');
 
-        if (!participanteDB) {
+        if (!inscripcionDB) {
             return res.status(404).json({
                 ok: false,
-                msg: 'No existe un participante con ese id'
+                msg: 'No existe una inscripción con ese id'
             });
         };
-
-        // Actualización
-        const { email, ...campos } = req.body;
-
-        if (participanteDB.email !== email) {
-            const existeEmail = await Participante.findOne({
-                email: email
-            });
-
-            if (existeEmail) {
-                return res.status(400).json({
-                    ok: false,
-                    msg: 'Ya existe un participante con ese email'
-                });
-            };
-        };
-
-        const participanteActualizado = await Participante.findByIdAndUpdate(uid, campos, { new: true });
 
         res.json({
             ok: true,
-            participante: participanteActualizado
+            inscripcion: inscripcionDB
         });
 
     } catch (error) {
@@ -142,12 +122,11 @@ const crearInscripcion = async (req, res = response) => {
             ok: false,
             msg: 'Error inesperado, hable con el administrador'
         });
-    }
-
-};*/
+    }  
+};
 
 module.exports = {
     getInscripcionPaginado,
-    crearInscripcion
-    //actualizarParticipante
+    crearInscripcion,
+    getInscripcion
 }

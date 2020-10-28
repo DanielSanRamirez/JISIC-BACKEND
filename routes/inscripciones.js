@@ -9,7 +9,11 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 // Importación de los controllers
-const { crearInscripcion, getInscripcionPaginado } = require('../controllers/inscripciones');
+const {
+    crearInscripcion,
+    getInscripcionPaginado,
+    getInscripcion
+} = require('../controllers/inscripciones');
 
 // Importación de middlewares
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -17,6 +21,8 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const router = Router();
 
 router.get('/', getInscripcionPaginado);
+
+router.get('/rechazo', getInscripcion);
 
 router.post('/', [
     check('participante', 'El id del Participante es obligatorio').not().isEmpty(),
