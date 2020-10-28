@@ -6,6 +6,7 @@ const Inscripcion = require('../models/inscripcion')
 
 // Importación de correo electrónico
 const sendRechazoPreInscripcion = require('../emails/rechazo-pre-inscripcion');
+const sendEmailLlenarDatosFactura = require('../emails/llenar-datos-factura');
 
 const getPreInscripcionPaginado = async (req, res = response) => {
 
@@ -156,8 +157,58 @@ const actualizarEstadoParticipanteRechazo = async (req, res = response) => {
     }
 }
 
+const actualizarEstadoInscripcion = async (req, res = response) => {
+
+    // Se obtiene el id de la inscripción
+    const id = req.params.id;
+    const datosEmail = [];
+
+    try {
+
+        // Busca en la BD la inscripción con el id
+        const inscripcionDB = await Inscripcion.findById(id);
+
+        if (!inscripcionDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe una inscripción con ese id'
+            });
+        };
+
+        inscripcionDB.estado = true;
+
+        const estadoInscripcionActualizado = await Inscripcion.findByIdAndUpdate(id, inscripcionDB, { new: true });
+
+        const participanteDB = await Participante.findById(inscripcionDB.participante);
+
+        // Comprobar cuantas inscripciones están en falso 
+        const inscripcionesParticipante = await Inscripcion.find({ participante: inscripcionDB.participante, estado: false });
+        
+        if (inscripcionesParticipante.length === 0) {
+            
+            const inscripcion = await Inscripcion.findById({_id: id, estado: true});
+            datosEmail.push(participanteDB);
+            datosEmail.push(inscripcion.costoTotal);
+            sendEmailLlenarDatosFactura.sendEmail(datosEmail);
+        }
+
+        res.json({
+            ok: true,
+            inscripcion: estadoInscripcionActualizado
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }
+}
+
 module.exports = {
     getPreInscripcionPaginado,
     getDocumentosPreInscripcion,
-    actualizarEstadoParticipanteRechazo
+    actualizarEstadoParticipanteRechazo,
+    actualizarEstadoInscripcion
 }

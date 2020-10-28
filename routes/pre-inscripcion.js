@@ -12,7 +12,8 @@ const { Router } = require('express');
 const {
     getPreInscripcionPaginado,
     getDocumentosPreInscripcion,
-    actualizarEstadoParticipanteRechazo
+    actualizarEstadoParticipanteRechazo,
+    actualizarEstadoInscripcion
 } = require('../controllers/pre-inscripcion');
 
 // Importación de middlewares
@@ -24,7 +25,9 @@ router.get('/', getPreInscripcionPaginado);
 
 router.get('/coleccion/:dato/:busqueda', getDocumentosPreInscripcion);
 
-router.put('/rechazo/:id', actualizarEstadoParticipanteRechazo)
+router.put('/rechazo/:id', actualizarEstadoParticipanteRechazo);
+
+router.put('/aceptado/:id', actualizarEstadoInscripcion);
 
 /*router.post('/', [
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),
