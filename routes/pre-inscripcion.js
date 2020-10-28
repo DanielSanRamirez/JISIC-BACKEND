@@ -9,7 +9,11 @@ const { Router } = require('express');
 // const { check } = require('express-validator');
 
 // Importación de los controllers
-const { getPreInscripcionPaginado, getDocumentosPreInscripcion } = require('../controllers/pre-inscripcion');
+const {
+    getPreInscripcionPaginado,
+    getDocumentosPreInscripcion,
+    actualizarEstadoParticipanteRechazo
+} = require('../controllers/pre-inscripcion');
 
 // Importación de middlewares
 // const { validarCampos } = require('../middlewares/validar-campos');
@@ -19,6 +23,8 @@ const router = Router();
 router.get('/', getPreInscripcionPaginado);
 
 router.get('/coleccion/:dato/:busqueda', getDocumentosPreInscripcion);
+
+router.put('/rechazo/:id', actualizarEstadoParticipanteRechazo)
 
 /*router.post('/', [
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),

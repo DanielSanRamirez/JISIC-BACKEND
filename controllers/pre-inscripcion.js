@@ -4,6 +4,9 @@ const { response } = require('express');
 const Participante = require('../models/participante');
 const Inscripcion = require('../models/inscripcion')
 
+// Importación de correo electrónico
+const sendRechazoPreInscripcion = require('../emails/rechazo-pre-inscripcion');
+
 const getPreInscripcionPaginado = async (req, res = response) => {
 
     const desde = Number(req.query.desde) || 1;
@@ -85,7 +88,76 @@ const getDocumentosPreInscripcion = async (req, res = response) => {
     });
 };
 
+const actualizarEstadoParticipanteRechazo = async (req, res = response) => {
+
+    // Se obtiene el id de la inscripción
+    const id = req.params.id;
+    const datosEmail = [];
+
+    try {
+
+        // Busca en la BD la inscripción con el id
+        const inscripcionDB = await Inscripcion.findById(id);
+
+        if (!inscripcionDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe una inscripción con ese id'
+            });
+        };
+
+        const uidParticipante = inscripcionDB.participante;
+        inscripcionDB.estadoParticipante = false;
+
+        const estadoParticipanteInscripcionActualizado = await Inscripcion.findByIdAndUpdate(id, inscripcionDB, { new: true });
+
+        const inscripciones = await Inscripcion.find({ participante: uidParticipante });
+        let numeroElementos = 0;
+        let estadoParticipanteActualizado;
+
+        inscripciones.forEach(element => {
+            if (element.estadoParticipante === false) {
+                
+                numeroElementos += 1;
+            }
+        });
+
+        if (numeroElementos === inscripciones.length) {
+            const participanteDB = await Participante.findById(uidParticipante);
+
+            if (!participanteDB) {
+                return res.status(404).json({
+                    ok: false,
+                    msg: 'No existe una participante con ese id'
+                });
+            };
+            estadoParticipanteActualizado = await Participante.findByIdAndUpdate(uidParticipante, participanteDB, { new: true });
+        } else {
+            estadoParticipanteActualizado = await Participante.findById(uidParticipante);
+        }
+
+        datosEmail.push(req.body.mensaje);
+        datosEmail.push(estadoParticipanteActualizado);
+        datosEmail.push(estadoParticipanteInscripcionActualizado);
+        sendRechazoPreInscripcion.sendEmail(datosEmail);
+
+        res.json({
+            ok: true,
+            inscripcion: estadoParticipanteInscripcionActualizado,
+            participante: estadoParticipanteActualizado 
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }
+}
+
 module.exports = {
     getPreInscripcionPaginado,
-    getDocumentosPreInscripcion
+    getDocumentosPreInscripcion,
+    actualizarEstadoParticipanteRechazo
 }

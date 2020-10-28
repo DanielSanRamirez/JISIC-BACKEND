@@ -126,7 +126,7 @@ const actualizarEstadoParticipante = async (req, res = response) => {
 
     try {
 
-        // Busca en la BD el usuario con el uid
+        // Busca en la BD el participante con el uid
         const participanteDB = await Participante.findById(uid);
         
         if (!participanteDB) {
@@ -151,9 +151,6 @@ const actualizarEstadoParticipante = async (req, res = response) => {
         const inscripciones = await Inscripcion.find({participante: uid});
         inscripciones.forEach(async element => {
             element.estadoParticipante = true;
-            console.log(element.estadoParticipante);
-            console.log(element._id);
-            console.log(element);
             await Inscripcion.findByIdAndUpdate(element._id, element, {new: true});
         });
 
