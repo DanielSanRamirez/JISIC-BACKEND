@@ -168,9 +168,24 @@ const actualizarEstadoParticipante = async (req, res = response) => {
     }
 }
 
+const getParticipante = async (req, res = response) => {
+
+    // Definir el valor para traer los datos
+    const id = req.query.id;
+
+    const participante = await Participante.findById(id);
+
+    res.json({
+        ok: true,
+        participante
+    });
+
+};
+
 module.exports = {
     getParticipantes,
     crearParticipante,
     actualizarParticipante,
-    actualizarEstadoParticipante
+    actualizarEstadoParticipante,
+    getParticipante
 }

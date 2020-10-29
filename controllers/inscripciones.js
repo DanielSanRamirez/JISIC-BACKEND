@@ -125,8 +125,38 @@ const getInscripcion = async (req, res = response) => {
     }  
 };
 
+const getInscripciones = async (req, res = response) => {
+
+    const id = req.query.id;
+
+    try {
+
+        const inscripcionDB = await Inscripcion.find({participante: id}).populate('producto');
+
+        if (!inscripcionDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe una inscripción con ese id de participante'
+            });
+        };
+
+        res.json({
+            ok: true,
+            inscripciones: inscripcionDB
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }  
+};
+
 module.exports = {
     getInscripcionPaginado,
     crearInscripcion,
-    getInscripcion
+    getInscripcion,
+    getInscripciones
 }

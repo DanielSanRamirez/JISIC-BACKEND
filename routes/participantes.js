@@ -9,7 +9,12 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 // Importación de los controllers
-const { getParticipantes, crearParticipante, actualizarParticipante, actualizarEstadoParticipante } = require('../controllers/participantes');
+const {
+    getParticipantes,
+    crearParticipante,
+    actualizarEstadoParticipante,
+    getParticipante
+} = require('../controllers/participantes');
 
 // Importación de middlewares
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -17,6 +22,8 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const router = Router();
 
 router.get('/', getParticipantes);
+
+router.get('/participante/', getParticipante);
 
 router.post('/', [
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),

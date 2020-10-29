@@ -12,7 +12,8 @@ const { check } = require('express-validator');
 const {
     crearInscripcion,
     getInscripcionPaginado,
-    getInscripcion
+    getInscripcion,
+    getInscripciones
 } = require('../controllers/inscripciones');
 
 // Importación de middlewares
@@ -21,6 +22,8 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const router = Router();
 
 router.get('/', getInscripcionPaginado);
+
+router.get('/inscripciones/', getInscripciones);
 
 router.get('/rechazo', getInscripcion);
 
