@@ -60,7 +60,7 @@ exports.sendEmail = async function (req, res) {
 
                     <p>Once you've paid the registration, press the button below to fill out the payment form:</p>
 
-                    <a href="http://localhost:4200/datos-factura/${req[0]._id}" title="Continuar">
+                    <a href="${process.env.CORREO}datos-factura/${req[0]._id}" title="Continuar">
                         <img src="https://jisic.epn.edu.ec/images/inscripcion/button.png" alt="Continue Button" style="width:200px;height:auto;border:0;">
                     </a>
 

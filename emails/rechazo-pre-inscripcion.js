@@ -41,7 +41,7 @@ exports.sendEmail = async function (req, res) {
                     <p>Press the button below to re-upload your file to the Registration System JISIC:</p>
 
                     
-                    <a href="http://localhost:4200/rechazo/pre-inscripcion/${req[2]._id}" title="Continuar">
+                    <a href="${process.env.CORREO}rechazo/pre-inscripcion/${req[2]._id}" title="Continuar">
                         <img src="https://jisic.epn.edu.ec/images/inscripcion/button.png" alt="Continue Button" style="width:200px;height:auto;border:0;">
                     </a>
 

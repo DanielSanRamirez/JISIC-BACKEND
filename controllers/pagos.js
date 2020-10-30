@@ -67,6 +67,7 @@ const crearPago = async (req, res = response) => {
         const inscripciones = await Inscripcion.find({participante: id});
         inscripciones.forEach(async element => {
             element.pago = idPago;
+            element.estadoRecibo = true;
             const inscripcionActualizada = await Inscripcion.findByIdAndUpdate(element._id, element, {new: true});
         });
 

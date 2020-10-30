@@ -41,7 +41,7 @@ exports.sendEmail = async function (req, res) {
                     <p>These data will be used to issuance of participation certificates in the event.</p>
                     <p>To continue, press the button below to verify your email:</p>
                     
-                    <a href="http://localhost:4200/email-confirmation/${req._id}" title="Registro Completo">
+                    <a href="${process.env.CORREO}email-confirmation/${req._id}" title="Registro Completo">
                         <img src="https://jisic.epn.edu.ec/images/inscripcion/verifyEmail.png" alt="Verification email button" style="width:200px;height:auto;border:0;">
                     </a>
                     

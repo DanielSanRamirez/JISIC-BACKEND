@@ -9,7 +9,10 @@ const { Router } = require('express');
 // const { check } = require('express-validator');
 
 // Importación de los controllers
-const { getPorPagarPaginado } = require('../controllers/por-pagar');
+const { 
+    getPorPagarPaginado, 
+    getDocumentosPorPagar 
+} = require('../controllers/por-pagar');
 
 // Importación de middlewares
 // const { validarCampos } = require('../middlewares/validar-campos');
@@ -17,6 +20,8 @@ const { getPorPagarPaginado } = require('../controllers/por-pagar');
 const router = Router();
 
 router.get('/', getPorPagarPaginado);
+
+router.get('/coleccion/:dato/:busqueda', getDocumentosPorPagar);
 
 /*router.post('/', [
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),

@@ -36,6 +36,10 @@ const InscripcionSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Pago'
     },
+    estadoRecibo: {
+        type: Boolean,
+        default: false
+    },
 }, {
     collection: 'inscripciones' // Se coloca esta propiedad ya que mongo no puede poner plural 'es' solo 's'
 });
