@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 const Inscripcion = require('../models/inscripcion');
+const Pago = require('../models/pago');
 
 const borrarImagen = (path) => {
 
@@ -31,7 +32,18 @@ const actualizarImagen = async (tipo, id, nombreArchivo) => {
             break;
 
         case 'factura':
-            
+            const pago = await Pago.findById(id);
+            if (!pago) {
+                console.log('No es un pago por id');
+                return false;
+            }
+
+            pathViejo = `./uploads/factura/${pago.imgDeposito}`;
+            borrarImagen(pathViejo);
+
+            pago.imgDeposito = nombreArchivo;
+            await pago.save();
+            return true;
             break;
 
         default:

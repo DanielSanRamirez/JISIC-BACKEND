@@ -31,7 +31,11 @@ const InscripcionSchema = Schema({
     estadoParticipante: {
         type: Boolean,
         default: false
-    }
+    },
+    pago: {
+        type: Schema.Types.ObjectId,
+        ref: 'Pago'
+    },
 }, {
     collection: 'inscripciones' // Se coloca esta propiedad ya que mongo no puede poner plural 'es' solo 's'
 });
