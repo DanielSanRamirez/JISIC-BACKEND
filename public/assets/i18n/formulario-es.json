@@ -52,7 +52,8 @@
         "ENDREGISTERMSGTEXT": "De clic en el botón \"Enviar\" para realizar la pre-inscripción a las JISIC",
         "TITLEMSGCORRECT": "Correcto",
         "TEXTMSGCORRECT1": "La pre-inscripción del participante",
-        "TEXTMSGCORRECT2": "ha sido creado correctamente"
+        "TEXTMSGCORRECT2": "ha sido creado correctamente",
+        "MSGERRORIDENTITY": "Error en la cédula de identidad"
     },
     "RECHAZO": {
         "TITLE": "Actualizar Archivo",
@@ -72,6 +73,8 @@
         "NUMBERTRANFERENCE": "Número de transacción bancaria",
         "TRANFERENCEDATE": "Fecha Transferencia",
         "TRANFERENCECOPY": "Copia de Depósito",
-        "MSGTRANSFNUMBER": "* El número de transacción bancaria solo puede contener números positivos y es obligatorio"
+        "MSGTRANSFNUMBER": "* El número de transacción bancaria solo puede contener números positivos y es obligatorio",
+        "MSGRUC": "* El RUC solo puede contener números, tener 13 dígitos y es obligatoria",
+        "MSGBANKNAME": "* El nombre del banco solo puede contener letras, números y es obligatorio"
     }
 }

@@ -36,7 +36,7 @@ exports.sendEmail = async function (req, res) {
 
                     <h1>Your pre-registration has been approved.</h1>
  
-                    <p>To continue with the registration process you must pay the amount of: ${req[1]} USD during the next 5 days.</p>  
+                    <p>To continue with the registration process you must pay the amount of: <strong>${req[1]} USD</strong>  during the next 5 days.</p>  
                     
                     <h2>PAYMENT METHODS</h2>
                     <p><strong>1.- Bank transfer:</strong></p>

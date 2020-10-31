@@ -34,9 +34,9 @@ exports.sendEmail = async function (req, res) {
                 <body>
                     <img class="imagenBanner" src="https://jisic.epn.edu.ec/images/inscripcion/bannerEmail.jpg" alt="Banner de las JISIC">
 
-                    <h1>Problems have been found in your pre-registration:</h1>
+                    <p>Problems have been found in your pre-registration:</p>
  
-                    <p>${req[0]}</p>  
+                    <p><strong>${req[0]}</strong></p>  
                     
                     <p>Press the button below to re-upload your file to the Registration System JISIC:</p>
 

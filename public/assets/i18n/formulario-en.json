@@ -1,6 +1,6 @@
 {
     "HOME": {
-        "TITLE": "Registration System for JISIC",
+        "TITLE": "Registration System JISIC",
         "ENGLISH": "English",
         "SPANISH": "Spanish",
         "STEP": ["Personal Information", "Registration", "Done"],
@@ -48,7 +48,8 @@
         "ENDREGISTERMSGTEXT": "Click on the \"Send\" button to pre-register to the JISIC",
         "TITLEMSGCORRECT": "Correct",
         "TEXTMSGCORRECT1": "Participant",
-        "TEXTMSGCORRECT2": "'s pre-registration has been created successfully"
+        "TEXTMSGCORRECT2": "'s pre-registration has been created successfully",
+        "MSGERRORIDENTITY": "Error in the identity card"
     },
     "RECHAZO": {
         "TITLE": "Update File",
@@ -64,10 +65,12 @@
         "NAMES": "Full Name",
         "CHECKMESDATA": "Use registered personal information?",
         "CHECKMESPAY": "Direct transfer Banco Pichincha",
-        "BANK": "Bank",
+        "BANK": "Bank Name",
         "NUMBERTRANFERENCE": "Bank transaction number",
         "TRANFERENCEDATE": "Transfer Date",
         "TRANFERENCECOPY": "Deposit Copy",
-        "MSGTRANSFNUMBER": "* The bank transaction number can only contain positive numbers and is required"
+        "MSGTRANSFNUMBER": "* The bank transaction number can only contain positive numbers and is required",
+        "MSGRUC": "* RUC can only contain numbers, have 13 digits and is required",
+        "MSGBANKNAME": "* The bank name can only contain letters, numbers and is required"
     }
 }
