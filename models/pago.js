@@ -8,6 +8,10 @@ const PagoSchema = Schema({
         type: Boolean,
         default: false
     },
+    estadoInscripcion: {
+        type: Boolean,
+        default: true
+    },
     nombres: {
         type: String,
         require: true

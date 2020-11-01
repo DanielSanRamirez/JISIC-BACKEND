@@ -21,7 +21,7 @@ const getPagoPaginado = async (req, res = response) => {
         limit: 10
     };
 
-    Pago.paginate({ estado: false }, option, (err, pagos) => {
+    Pago.paginate({ estado: false, estadoInscripcion: true }, option, (err, pagos) => {
         if (err) {
             console.log(err);
             res.status(500).send({ message: 'Error en la petición' });
@@ -137,8 +137,7 @@ const emailRechazoPago = async (req, res = response) => {
     try {
 
         const inscripcionDB = await Inscripcion.findOne({ pago: id }).populate('participante').populate('producto').populate('pago');
-
-        console.log(inscripcionDB);
+        
         if (!inscripcionDB) {
             return res.status(404).json({
                 ok: false,
@@ -151,6 +150,16 @@ const emailRechazoPago = async (req, res = response) => {
         datosEmail.push(id);
         
         await sendEmailRechazoPago.sendEmail(datosEmail);
+
+        const inscripciones = await Inscripcion.find({pago: id}).populate('participante').populate('producto').populate('pago');
+        inscripciones.forEach(async element => {
+            element.estadoRecibo = false;
+            await Inscripcion.findByIdAndUpdate(element._id, element, {new: true});
+        });
+
+        const pago = await Pago.findById(id);
+        pago.estadoInscripcion = false;
+        await Pago.findByIdAndUpdate(id, pago, {new: true});
 
         res.json({
             ok: true,

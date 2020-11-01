@@ -42,7 +42,15 @@ const actualizarImagen = async (tipo, id, nombreArchivo) => {
             borrarImagen(pathViejo);
 
             pago.imgDeposito = nombreArchivo;
+            pago.estadoInscripcion = true;
             await pago.save();
+
+            const inscripciones = await Inscripcion.find({pago: id});
+            inscripciones.forEach(async element => {
+                element.estadoRecibo = true;
+                await Inscripcion.findByIdAndUpdate(element._id, element, {new: true});
+            });
+
             return true;
             break;
 
