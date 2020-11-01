@@ -14,7 +14,9 @@ const {
     getPagoPaginado,
     emailTeso,
     emailRechazoPago,
-    getPago
+    getPago,
+    actualizarEstadoPago,
+    getDocumentosPago
 } = require('../controllers/pagos');
 
 // Importación de middlewares
@@ -27,6 +29,8 @@ router.get('/', getPagoPaginado);
 router.get('/pago', getPago);
 
 router.get('/email-teso/', emailTeso);
+
+router.get('/coleccion/:dato/:busqueda', getDocumentosPago);
 
 router.post('/', [
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),
@@ -42,6 +46,11 @@ router.post('/', [
 ], crearPago);
 
 router.post('/rechazo/:id', emailRechazoPago);
+
+router.post('/aceptado/:id', [
+    check('numeroFactura', 'El número de la factura es obligatorio').not().isEmpty(),
+    validarCampos
+], actualizarEstadoPago);
 
 /*router.put('/estado/:id', [
     check('estado', 'El estado es obligatorio').not().isEmpty(),

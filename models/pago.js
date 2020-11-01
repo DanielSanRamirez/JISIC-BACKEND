@@ -55,6 +55,9 @@ const PagoSchema = Schema({
     imgDeposito: {
         type: String,
     },
+    numeroFactura: {
+        type: String,
+    },
 });
 
 PagoSchema.plugin(mongoosePaginate);

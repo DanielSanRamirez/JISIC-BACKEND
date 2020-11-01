@@ -5,6 +5,7 @@ const path = require('path');
 
 const sendEmailTesorera = require('../emails/tesorera-datos-factura');
 const sendEmailRechazoPago = require('../emails/email-rechazo-pago');
+const sendEmailAprobado = require('../emails/email-aprobado');
 
 // Impotación del modelo
 const Participante = require('../models/participante');
@@ -137,7 +138,7 @@ const emailRechazoPago = async (req, res = response) => {
     try {
 
         const inscripcionDB = await Inscripcion.findOne({ pago: id }).populate('participante').populate('producto').populate('pago');
-        
+
         if (!inscripcionDB) {
             return res.status(404).json({
                 ok: false,
@@ -148,18 +149,18 @@ const emailRechazoPago = async (req, res = response) => {
         datosEmail.push(req.body.mensaje);
         datosEmail.push(inscripcionDB.participante);
         datosEmail.push(id);
-        
+
         await sendEmailRechazoPago.sendEmail(datosEmail);
 
-        const inscripciones = await Inscripcion.find({pago: id}).populate('participante').populate('producto').populate('pago');
+        const inscripciones = await Inscripcion.find({ pago: id }).populate('participante').populate('producto').populate('pago');
         inscripciones.forEach(async element => {
             element.estadoRecibo = false;
-            await Inscripcion.findByIdAndUpdate(element._id, element, {new: true});
+            await Inscripcion.findByIdAndUpdate(element._id, element, { new: true });
         });
 
         const pago = await Pago.findById(id);
         pago.estadoInscripcion = false;
-        await Pago.findByIdAndUpdate(id, pago, {new: true});
+        await Pago.findByIdAndUpdate(id, pago, { new: true });
 
         res.json({
             ok: true,
@@ -201,13 +202,99 @@ const getPago = async (req, res = response) => {
             ok: false,
             msg: 'Error inesperado, hable con el administrador'
         });
-    }  
+    }
+};
+
+const actualizarEstadoPago = async (req, res = response) => {
+
+    // Se obtiene el id del pago
+    const id = req.params.id;
+    const numeroFactura = req.body.numeroFactura;
+    const datosEmail = [];
+
+    try {
+
+        // Busca en la BD el pago con el id
+        const pagoDB = await Pago.findById(id);
+
+        if (!pagoDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe un registro de pago con ese id'
+            });
+        };
+
+        pagoDB.estado = true;
+        pagoDB.numeroFactura = numeroFactura;
+
+        await Pago.findByIdAndUpdate(id, pagoDB, { new: true });
+
+        const inscripcion = await Inscripcion.findOne({ pago: id }).populate('participante');
+        datosEmail.push(inscripcion.participante)
+        sendEmailAprobado.sendEmail(datosEmail[0]);
+
+        res.json({
+            ok: true
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }
+}
+
+const getDocumentosPago = async (req, res = response) => {
+
+    const dato = req.params.dato;
+    const valorBusqueda = req.params.busqueda;
+    const regex = new RegExp(valorBusqueda, 'i');
+
+    let data = [];
+    let data1 = [];
+
+    switch (dato) {
+        case 'numeroTransaccion':
+            data1 = await Pago.find({ estado: false, estadoInscripcion: true });
+            data1.forEach(element => {
+                if (String(element.numeroTransaccion).match(regex)) {
+                    data.push(element);
+                }
+
+            });
+            break;
+
+        case 'identificacion':
+            data1 = await Pago.find({ estado: false, estadoInscripcion: true });
+            data1.forEach(element => {
+                if (element.identificacion.match(regex)) {
+                    data.push(element);
+                }
+
+            });
+            break;
+
+        default:
+            return res.status(400).json({
+                ok: false,
+                msg: 'El path tiene que ser api/pagos/coleccion/numeroTransaccion o api/pagos/coleccion/identificacion'
+            })
+    }
+
+    res.json({
+        ok: true,
+        resultados: data
+    });
 };
 
 module.exports = {
     crearPago,
     getPagoPaginado,
     emailTeso,
-    emailRechazoPago, 
-    getPago
+    emailRechazoPago,
+    getPago,
+    actualizarEstadoPago,
+    getDocumentosPago
 }
