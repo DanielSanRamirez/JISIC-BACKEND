@@ -10,7 +10,9 @@ const { check } = require('express-validator');
 
 // Importación de los controllers
 const {
-    crearPago
+    crearPago, 
+    getPagoPaginado,
+    emailTeso
 } = require('../controllers/pagos');
 
 // Importación de middlewares
@@ -18,13 +20,12 @@ const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
 
-//router.get('/', getParticipantes);
+router.get('/', getPagoPaginado);
 
-//router.get('/participante/', getParticipante);
+router.get('/email-teso/', emailTeso);
 
 router.post('/', [
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),
-    check('apellidos', 'El apellido es obligatorio').not().isEmpty(),
     check('direccion', 'La dirección es obligatoria').not().isEmpty(),
     check('codTelefono', 'El código del teléfono es obligatorio').not().isEmpty(),
     check('telefono', 'El telefono es obligatorio').not().isEmpty(),

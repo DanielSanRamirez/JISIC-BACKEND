@@ -21,8 +21,6 @@ const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
 
-router.get('/', getInscripcionPaginado);
-
 router.get('/inscripciones/', getInscripciones);
 
 router.get('/rechazo', getInscripcion);

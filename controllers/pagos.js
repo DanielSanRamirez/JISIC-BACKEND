@@ -1,35 +1,42 @@
 // Importación para tener las funciones del res
 const { response } = require('express');
 
-const sendEmailPreRegistro = require('../emails/pre-inscrption');
-const sendEmailLlenarDatosFactura = require('../emails/llenar-datos-factura');
+const path = require('path');
+
+const sendEmailTesorera = require('../emails/tesorera-datos-factura');
 
 // Impotación del modelo
 const Participante = require('../models/participante');
 const Inscripcion = require('../models/inscripcion');
 const Pago = require('../models/pago');
 
-/*const getParticipantes = async (req, res = response) => {
+const getPagoPaginado = async (req, res = response) => {
 
-    // Definir el valor para traer los datos
-    const desde = Number(req.query.desde) || 0;
+    const desde = Number(req.query.desde) || 1;
+    const inscripcionesFinal = [];
 
-    const [participantes, total] = await Promise.all([
-        Participante.find({}, 'nombres apellidos direccion codTelefono telefono email pais')
-            .skip(desde)
-            .limit(10)
-            .populate('pais', 'nombre')
-            .populate('codTelefono', 'phone_code'),
-        Participante.countDocuments()
-    ]);
+    var option = {
+        page: desde,
+        limit: 10,
+        populate: ['participante', 'producto', 'pago'],
+    };
 
-    res.json({
-        ok: true,
-        participantes,
-        total
+    Inscripcion.paginate({ estado: true, estadoParticipante: true, estadoRecibo: true }, option, (err, inscripciones) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send({ message: 'Error en la petición' });
+        } else {
+            if (!inscripciones) {
+                res.status(404).send({ message: 'No se encontro Inscripciones' });
+            } else {
+                return res.json({
+                    totalPages: inscripciones.totalPages,
+                    inscripciones: inscripciones.docs,
+                });
+            }
+        }
     });
-
-};*/
+};
 
 const crearPago = async (req, res = response) => {
 
@@ -37,6 +44,8 @@ const crearPago = async (req, res = response) => {
 
     // Obtener datos del body de la petición
     const { numeroTransaccion } = req.body;
+
+    var datosEmail = [];
 
     try {
 
@@ -64,11 +73,12 @@ const crearPago = async (req, res = response) => {
         }
 
         const idPago = pagoRegistrado._id;
-        const inscripciones = await Inscripcion.find({participante: id});
+
+        const inscripciones = await Inscripcion.find({ participante: id });
         inscripciones.forEach(async element => {
             element.pago = idPago;
             element.estadoRecibo = true;
-            const inscripcionActualizada = await Inscripcion.findByIdAndUpdate(element._id, element, {new: true});
+            await Inscripcion.findByIdAndUpdate(element._id, element, { new: true })
         });
 
         res.json({
@@ -85,6 +95,39 @@ const crearPago = async (req, res = response) => {
     }
 
 };
+
+const emailTeso = async (req, res = response) => {
+
+    const id = req.query.id;
+
+    var datosEmail = [];
+
+    try {
+
+        datosEmail = await Inscripcion.findOne({participante: id}).populate('participante').populate('producto').populate('pago');
+
+        if (datosEmail.pago.tipoIdentificacion == '1') {
+            datosEmail.pago.tipoIdentificacion = 'Cédula de Identidad'
+        } else {
+            datosEmail.pago.tipoIdentificacion = 'RUC'
+        }
+
+        await sendEmailTesorera.sendEmail(datosEmail);
+
+        res.json({
+            ok: true,
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }
+
+};
+
 
 /*const actualizarParticipante = async (req, res = response) => {
 
@@ -201,5 +244,7 @@ const crearPago = async (req, res = response) => {
 };*/
 
 module.exports = {
-    crearPago
+    crearPago,
+    getPagoPaginado,
+    emailTeso
 }

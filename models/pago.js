@@ -13,8 +13,7 @@ const PagoSchema = Schema({
         require: true
     },
     apellidos: {
-        type: String,
-        require: true
+        type: String
     },
     direccion: {
         type: String,

@@ -131,7 +131,6 @@ const actualizarProducto = async (req, res = response) => {
             const existeNombre = await Producto.findOne({
                 nombre: nombre
             });
-            console.log(existeNombre);
             if (existeNombre) {
                 return res.status(400).json({
                     ok: false,
