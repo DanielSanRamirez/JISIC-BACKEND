@@ -4,6 +4,7 @@ const { response } = require('express');
 const path = require('path');
 
 const sendEmailTesorera = require('../emails/tesorera-datos-factura');
+const sendEmailRechazoPago = require('../emails/email-rechazo-pago');
 
 // Impotación del modelo
 const Participante = require('../models/participante');
@@ -17,21 +18,20 @@ const getPagoPaginado = async (req, res = response) => {
 
     var option = {
         page: desde,
-        limit: 10,
-        populate: ['participante', 'producto', 'pago'],
+        limit: 10
     };
 
-    Inscripcion.paginate({ estado: true, estadoParticipante: true, estadoRecibo: true }, option, (err, inscripciones) => {
+    Pago.paginate({ estado: false }, option, (err, pagos) => {
         if (err) {
             console.log(err);
             res.status(500).send({ message: 'Error en la petición' });
         } else {
-            if (!inscripciones) {
-                res.status(404).send({ message: 'No se encontro Inscripciones' });
+            if (!pagos) {
+                res.status(404).send({ message: 'No se encontro Pagos' });
             } else {
                 return res.json({
-                    totalPages: inscripciones.totalPages,
-                    inscripciones: inscripciones.docs,
+                    totalPages: pagos.totalPages,
+                    pagos: pagos.docs,
                 });
             }
         }
@@ -104,7 +104,7 @@ const emailTeso = async (req, res = response) => {
 
     try {
 
-        datosEmail = await Inscripcion.findOne({participante: id}).populate('participante').populate('producto').populate('pago');
+        datosEmail = await Inscripcion.findOne({ participante: id }).populate('participante').populate('producto').populate('pago');
 
         if (datosEmail.pago.tipoIdentificacion == '1') {
             datosEmail.pago.tipoIdentificacion = 'Cédula de Identidad'
@@ -128,96 +128,32 @@ const emailTeso = async (req, res = response) => {
 
 };
 
+const emailRechazoPago = async (req, res = response) => {
 
-/*const actualizarParticipante = async (req, res = response) => {
+    const id = req.params.id;
 
-    // Se obtiene el id del participante
-    const uid = req.params.id;
-
-    try {
-
-        // Busca en la BD el usuario con el uid
-        const participanteDB = await Participante.findById(uid);
-
-        if (!participanteDB) {
-            return res.status(404).json({
-                ok: false,
-                msg: 'No existe un participante con ese id'
-            });
-        };
-
-        // Actualización
-        const { email, ...campos } = req.body;
-
-        if (participanteDB.email !== email) {
-            const existeEmail = await Participante.findOne({
-                email: email
-            });
-
-            if (existeEmail) {
-                return res.status(400).json({
-                    ok: false,
-                    msg: 'Ya existe un participante con ese email'
-                });
-            };
-        };
-
-        const participanteActualizado = await Participante.findByIdAndUpdate(uid, campos, { new: true });
-
-        res.json({
-            ok: true,
-            participante: participanteActualizado
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Error inesperado, hable con el administrador'
-        });
-    }
-
-};*/
-
-/*const actualizarEstadoParticipante = async (req, res = response) => {
-
-    // Se obtiene el id del participante
-    const uid = req.params.id;
-    const datosEmail = [];
+    var datosEmail = [];
 
     try {
 
-        // Busca en la BD el participante con el uid
-        const participanteDB = await Participante.findById(uid);
-        
-        if (!participanteDB) {
+        const inscripcionDB = await Inscripcion.findOne({ pago: id }).populate('participante').populate('producto').populate('pago');
+
+        console.log(inscripcionDB);
+        if (!inscripcionDB) {
             return res.status(404).json({
                 ok: false,
-                msg: 'No existe un participante con ese id'
+                msg: 'No existe una inscripción con ese id de Pago'
             });
-        };
-
-        // Comprobar cuantas inscripciones están en falso 
-        const inscripcionesParticipante = await Inscripcion.find({ participante: uid, estado: false });
-        
-        if (inscripcionesParticipante.length === 0) {
-            
-            const inscripcion = await Inscripcion.findOne({participante: uid, estado: true});
-            datosEmail.push(participanteDB);
-            datosEmail.push(inscripcion.costoTotal);
-            sendEmailLlenarDatosFactura.sendEmail(datosEmail);
         }
 
-        const participanteActualizado = await Participante.findByIdAndUpdate(uid, req.body, { new: true });
-        const inscripciones = await Inscripcion.find({participante: uid});
-        inscripciones.forEach(async element => {
-            element.estadoParticipante = true;
-            await Inscripcion.findByIdAndUpdate(element._id, element, {new: true});
-        });
+        datosEmail.push(req.body.mensaje);
+        datosEmail.push(inscripcionDB.participante);
+        datosEmail.push(id);
+        
+        await sendEmailRechazoPago.sendEmail(datosEmail);
 
         res.json({
             ok: true,
-            participante: participanteActualizado
         });
 
     } catch (error) {
@@ -227,24 +163,42 @@ const emailTeso = async (req, res = response) => {
             msg: 'Error inesperado, hable con el administrador'
         });
     }
-}*/
 
-/*const getParticipante = async (req, res = response) => {
+};
 
-    // Definir el valor para traer los datos
+const getPago = async (req, res = response) => {
+
     const id = req.query.id;
 
-    const participante = await Participante.findById(id);
+    try {
 
-    res.json({
-        ok: true,
-        participante
-    });
+        const pagoDB = await Pago.findById(id);
 
-};*/
+        if (!pagoDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe una registro de pago con ese id'
+            });
+        };
+
+        res.json({
+            ok: true,
+            pago: pagoDB
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, hable con el administrador'
+        });
+    }  
+};
 
 module.exports = {
     crearPago,
     getPagoPaginado,
-    emailTeso
+    emailTeso,
+    emailRechazoPago, 
+    getPago
 }

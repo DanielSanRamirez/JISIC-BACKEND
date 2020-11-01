@@ -12,7 +12,9 @@ const { check } = require('express-validator');
 const {
     crearPago, 
     getPagoPaginado,
-    emailTeso
+    emailTeso,
+    emailRechazoPago,
+    getPago
 } = require('../controllers/pagos');
 
 // Importación de middlewares
@@ -21,6 +23,8 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const router = Router();
 
 router.get('/', getPagoPaginado);
+
+router.get('/pago', getPago);
 
 router.get('/email-teso/', emailTeso);
 
@@ -36,6 +40,8 @@ router.post('/', [
     check('fechaTransaccion', 'La fecha de la transacción es obligatoria').isDate(),
     validarCampos
 ], crearPago);
+
+router.post('/rechazo/:id', emailRechazoPago);
 
 /*router.put('/estado/:id', [
     check('estado', 'El estado es obligatorio').not().isEmpty(),

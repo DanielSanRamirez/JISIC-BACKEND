@@ -13,7 +13,8 @@ const {
     crearInscripcion,
     getInscripcionPaginado,
     getInscripcion,
-    getInscripciones
+    getInscripciones,
+    getInscripcionPorPago
 } = require('../controllers/inscripciones');
 
 // Importación de middlewares
@@ -23,7 +24,9 @@ const router = Router();
 
 router.get('/inscripciones/', getInscripciones);
 
-router.get('/rechazo', getInscripcion);
+router.get('/inscripcion', getInscripcion);
+
+router.get('/inscripcion/pago', getInscripcionPorPago);
 
 router.post('/', [
     check('participante', 'El id del Participante es obligatorio').not().isEmpty(),
