@@ -45,20 +45,18 @@ const getDocumentosPreRegistro = async (req, res = response) => {
             data = await Participante.find({ identificacion: regex, estado: false });
             break;
 
-        case 'participante':
+        case 'apellidos':
             data = await Participante.find({ apellidos: regex, estado: false });
-            data1 = await Participante.find({ nombres: regex, estado: false });
-            if (data1.length > 0) {
-                data1.forEach(element => {
-                    data.push(element);
-                });
-            }
+            break;
+
+        case 'nombres':
+            data = await Participante.find({ nombres: regex, estado: false });
             break;
 
         default:
             return res.status(400).json({
                 ok: false,
-                msg: 'El path tiene que ser api/pre-registro/coleccion/identificacion o api/pre-registro/coleccion/participante'
+                msg: 'El path tiene que ser api/pre-registro/coleccion/identificacion o api/pre-registro/coleccion/apellidos o api/pre-registro/coleccion/nombres'
             })
     }
 
@@ -123,7 +121,7 @@ const borrarParticipante = async (req, res = response) => {
             });
         }
 
-        const insctipciones = await Inscripcion.find({participante: uid});
+        const insctipciones = await Inscripcion.find({ participante: uid });
         insctipciones.forEach(async element => {
             await Inscripcion.findByIdAndDelete(element._id)
         });

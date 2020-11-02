@@ -58,7 +58,8 @@
     "RECHAZO": {
         "TITLE": "Actualizar Archivo",
         "UPLOADBUTTON": "Actualizar",
-        "NAMES": "Participante"
+        "NAMES": "Participante",
+        "CLIENT": "Cliente"
     },
     "FACTURA": {
         "STEP": [

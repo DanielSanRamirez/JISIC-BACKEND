@@ -54,7 +54,8 @@
     "RECHAZO": {
         "TITLE": "Update File",
         "UPLOADBUTTON": "Upload",
-        "NAMES": "Participant"
+        "NAMES": "Participant",
+        "CLIENT": "Client"
     },
     "FACTURA": {
         "STEP": [
