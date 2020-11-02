@@ -36,6 +36,7 @@ app.use('/api/pre-registro', require('./routes/pre-registro'));
 app.use('/api/pre-inscripcion', require('./routes/pre-inscripcion'));
 app.use('/api/por-pagar', require('./routes/por-pagar'));
 app.use('/api/pagos', require('./routes/pagos'));
+app.use('/api/inscritos', require('./routes/inscritos'));
 
 // Si no encuentra ruta
 app.get('*', (req, res) => {

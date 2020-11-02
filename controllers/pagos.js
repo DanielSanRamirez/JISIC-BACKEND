@@ -230,6 +230,11 @@ const actualizarEstadoPago = async (req, res = response) => {
         await Pago.findByIdAndUpdate(id, pagoDB, { new: true });
 
         const inscripcion = await Inscripcion.findOne({ pago: id }).populate('participante');
+
+        const participante = await Participante.findById(inscripcion.participante._id);
+        participante.estadoInscrito = true;
+        await Participante.findByIdAndUpdate(inscripcion.participante._id, participante, {new: true})
+
         datosEmail.push(inscripcion.participante)
         sendEmailAprobado.sendEmail(datosEmail[0]);
 

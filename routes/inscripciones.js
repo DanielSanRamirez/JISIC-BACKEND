@@ -35,15 +35,4 @@ router.post('/', [
     validarCampos
 ], crearInscripcion);
 
-/*router.put('/:id', [
-    check('nombres', 'El nombre es obligatorio').not().isEmpty(),
-    check('apellidos', 'El apellido es obligatorio').not().isEmpty(),
-    check('direccion', 'La dirección es obligatoria').not().isEmpty(),
-    check('codTelefono', 'El código del teléfono es obligatorio').not().isEmpty(),
-    check('telefono', 'El telefono es obligatorio').not().isEmpty(),
-    check('email', 'El correo electrónico es obligatorio').isEmail(),
-    check('pais', 'El país es obligatorio').not().isEmpty(),
-    validarCampos
-], actualizarParticipante);*/
-
 module.exports = router;

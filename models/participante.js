@@ -47,6 +47,10 @@ const ParticipanteSchema = Schema({
         type: Boolean,
         default: false
     },
+    estadoInscrito: {
+        type: Boolean,
+        default: false
+    },
 });
 
 ParticipanteSchema.plugin(mongoosePaginate);
