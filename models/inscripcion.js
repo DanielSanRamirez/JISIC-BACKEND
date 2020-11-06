@@ -40,6 +40,10 @@ const InscripcionSchema = Schema({
         type: Boolean,
         default: false
     },
+    estadoInscrito: {
+        type: Boolean,
+        default: false
+    },
 }, {
     collection: 'inscripciones' // Se coloca esta propiedad ya que mongo no puede poner plural 'es' solo 's'
 });

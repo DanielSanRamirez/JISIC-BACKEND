@@ -3,6 +3,7 @@ const { response } = require('express');
 
 // Impotación del modelo
 const Participante = require('../models/participante');
+const Inscripcion = require('../models/inscripcion');
 
 const getInscritos = async (req, res) => {
 
@@ -10,10 +11,11 @@ const getInscritos = async (req, res) => {
 
     var option = {
         page: desde,
-        limit: 10
+        limit: 10,
+        populate: ['participante', 'producto', 'pago'],
     };
 
-    Participante.paginate({estado: true, estadoInscrito: true}, option, (err, participantes) => {
+    Inscripcion.paginate({ estado: true, estadoParticipante: true, estadoRecibo: true, estadoInscrito: true }, option, (err, participantes) => {
         if (err) {
             res.status(500).send({ message: 'Error en la petición' });
         } else {
@@ -52,7 +54,7 @@ const getDocumentosInscritos = async (req, res = response) => {
         case 'apellidos':
             data1 = await Participante.find({ estado: true, estadoInscrito: true });
             data1.forEach(element => {
-                
+
                 if (element.apellidos.match(regex)) {
                     data.push(element);
                 }

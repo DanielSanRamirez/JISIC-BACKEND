@@ -1,12 +1,16 @@
 // Importación para tener las funciones del res
 const { response } = require('express');
 
+const path = require('path');
+
 const sendEmailPreRegistro = require('../emails/pre-inscrption');
 const sendEmailLlenarDatosFactura = require('../emails/llenar-datos-factura');
 
 // Impotación del modelo
 const Participante = require('../models/participante');
 const Inscripcion = require('../models/inscripcion');
+
+const exTest = require('../controllers/reportes');
 
 const getParticipantes = async (req, res = response) => {
 
@@ -128,7 +132,7 @@ const actualizarEstadoParticipante = async (req, res = response) => {
 
         // Busca en la BD el participante con el uid
         const participanteDB = await Participante.findById(uid);
-        
+
         if (!participanteDB) {
             return res.status(404).json({
                 ok: false,
@@ -138,20 +142,20 @@ const actualizarEstadoParticipante = async (req, res = response) => {
 
         // Comprobar cuantas inscripciones están en falso 
         const inscripcionesParticipante = await Inscripcion.find({ participante: uid, estado: false });
-        
+
         if (inscripcionesParticipante.length === 0) {
-            
-            const inscripcion = await Inscripcion.findOne({participante: uid, estado: true});
+
+            const inscripcion = await Inscripcion.findOne({ participante: uid, estado: true });
             datosEmail.push(participanteDB);
             datosEmail.push(inscripcion.costoTotal);
             sendEmailLlenarDatosFactura.sendEmail(datosEmail);
         }
 
         const participanteActualizado = await Participante.findByIdAndUpdate(uid, req.body, { new: true });
-        const inscripciones = await Inscripcion.find({participante: uid});
+        const inscripciones = await Inscripcion.find({ participante: uid });
         inscripciones.forEach(async element => {
             element.estadoParticipante = true;
-            await Inscripcion.findByIdAndUpdate(element._id, element, {new: true});
+            await Inscripcion.findByIdAndUpdate(element._id, element, { new: true });
         });
 
         res.json({
@@ -181,6 +185,8 @@ const getParticipante = async (req, res = response) => {
     });
 
 };
+
+
 
 module.exports = {
     getParticipantes,

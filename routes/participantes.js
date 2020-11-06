@@ -13,7 +13,8 @@ const {
     getParticipantes,
     crearParticipante,
     actualizarEstadoParticipante,
-    getParticipante
+    getParticipante,
+    getReporteParticipantes
 } = require('../controllers/participantes');
 
 // Importación de middlewares
