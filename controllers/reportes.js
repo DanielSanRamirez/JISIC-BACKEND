@@ -236,6 +236,7 @@ const reporteInscritos = async function exTest() {
         { header: 'TELEFONO', key: 'telefono', width: 15 },
         { header: 'DIRECCIÓN', key: 'direccion', width: 15 },
         { header: 'TIPO DE INSCRIPCIÓN', key: 'tipoInscripcion', width: 50 },
+        { header: 'INSTITUCIÓN', key: 'institucion', width: 50 },
     ];
 
     participantes.forEach(element => {
@@ -247,7 +248,8 @@ const reporteInscritos = async function exTest() {
                     email: element.participante.email,
                     telefono: `+${elementPaises.phone_code} ${element.participante.telefono}`,
                     direccion: element.participante.direccion,
-                    tipoInscripcion: element.producto.nombre
+                    tipoInscripcion: element.producto.nombre,
+                    institucion: element.institucion,
                 });
             }
         });

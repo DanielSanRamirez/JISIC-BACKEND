@@ -60,7 +60,7 @@
     "FACTURA": {
         "STEP": [
             "Personal Information",
-            "Sales Check Data",
+            "Billing Information",
             "Payment Data"
         ],
         "NAMES": "Full Name",
