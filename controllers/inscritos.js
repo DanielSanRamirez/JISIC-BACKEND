@@ -42,9 +42,11 @@ const getDocumentosInscritos = async (req, res = response) => {
 
     switch (dato) {
         case 'identificacion':
-            data1 = await Participante.find({ estado: true, estadoInscrito: true });
+            data1 = await Inscripcion.find({ estado: true, estadoParticipante: true, estadoRecibo: true, estadoInscrito: true })
+            .populate('participante')
+            .populate('producto');
             data1.forEach(element => {
-                if (element.identificacion.match(regex)) {
+                if (element.participante.identificacion.match(regex)) {
                     data.push(element);
                 }
 
@@ -52,10 +54,11 @@ const getDocumentosInscritos = async (req, res = response) => {
             break;
 
         case 'apellidos':
-            data1 = await Participante.find({ estado: true, estadoInscrito: true });
+            data1 = await Inscripcion.find({ estado: true, estadoParticipante: true, estadoRecibo: true, estadoInscrito: true })
+            .populate('participante')
+            .populate('producto');
             data1.forEach(element => {
-
-                if (element.apellidos.match(regex)) {
+                if (element.participante.apellidos.match(regex)) {
                     data.push(element);
                 }
 
@@ -63,9 +66,11 @@ const getDocumentosInscritos = async (req, res = response) => {
             break;
 
         case 'nombres':
-            data1 = await Participante.find({ estado: true, estadoInscrito: true });
+            data1 = await Inscripcion.find({ estado: true, estadoParticipante: true, estadoRecibo: true, estadoInscrito: true })
+            .populate('participante')
+            .populate('producto');
             data1.forEach(element => {
-                if (element.nombres.match(regex)) {
+                if (element.participante.nombres.match(regex)) {
                     data.push(element);
                 }
 

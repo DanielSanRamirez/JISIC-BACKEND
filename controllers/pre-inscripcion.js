@@ -47,7 +47,7 @@ const getDocumentosPreInscripcion = async (req, res = response) => {
 
     switch (dato) {
         case 'identificacion':
-            data1 = await Inscripcion.find({ estado: false, estadoParticipante: true }).populate('participante');
+            data1 = await Inscripcion.find({ estado: false, estadoParticipante: true }).populate('participante').populate('producto');
             data1.forEach(element => {
                 if (element.participante.identificacion.match(regex)) {
                     data.push(element);
@@ -57,7 +57,7 @@ const getDocumentosPreInscripcion = async (req, res = response) => {
             break;
 
         case 'apellidos':
-            data1 = await Inscripcion.find({ estado: false, estadoParticipante: true }).populate('participante');
+            data1 = await Inscripcion.find({ estado: false, estadoParticipante: true }).populate('participante').populate('producto');
             data1.forEach(element => {
                 if (element.participante.apellidos.match(regex)) {
                     data.push(element);
@@ -67,7 +67,7 @@ const getDocumentosPreInscripcion = async (req, res = response) => {
             break;
 
         case 'nombres':
-            data1 = await Inscripcion.find({ estado: false, estadoParticipante: true }).populate('participante');
+            data1 = await Inscripcion.find({ estado: false, estadoParticipante: true }).populate('participante').populate('producto');
             data1.forEach(element => {
                 if (element.participante.nombres.match(regex)) {
                     data.push(element);

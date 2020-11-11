@@ -7,7 +7,7 @@ const Pais = require('../models/pais');
 const getPaises = async (req, res = response) => {
 
     const [paises] = await Promise.all([
-        Pais.find({}, 'nombre name phone_code'),
+        Pais.find({}, 'nombre name phone_code').sort('nombre'),
         
     ]);
 

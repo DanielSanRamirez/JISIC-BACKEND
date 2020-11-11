@@ -75,7 +75,7 @@
         "TRANFERENCEDATE": "Fecha Transferencia",
         "TRANFERENCECOPY": "Copia de Depósito",
         "MSGTRANSFNUMBER": "* El número de transacción bancaria solo puede contener números positivos y es obligatorio",
-        "MSGRUC": "* El RUC solo puede contener números, tener 13 dígitos y es obligatoria",
+        "MSGRUC": "* El RUC solo puede contener números, tener 13 dígitos y es obligatorio",
         "MSGBANKNAME": "* El nombre del banco solo puede contener letras, números y es obligatorio"
     }
 }

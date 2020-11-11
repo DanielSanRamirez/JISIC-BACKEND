@@ -7,7 +7,7 @@ const inscripcion = require('../models/inscripcion');
 // Impotación del modelo
 const Inscripcion = require('../models/inscripcion');
 const Pais = require('../models/pais');
-const Participante = require('../models/participante');
+const Pago = require('../models/pago');
 
 const getReporte = async (req, res = response) => {
 
@@ -167,32 +167,19 @@ const reportePagos = async function exTest() {
 
     const workbook = new ExcelJS.Workbook();
 
-    const [participantes] = await Promise.all([
-        Participante.find({ estado: true, estadoInscrito: true })
-    ]);
-
     const [inscripciones] = await Promise.all([
-        Inscripcion.find({ estado: true, estadoParticipante: true, estadoRecibo: true })
+        Inscripcion.find({ estado: true, estadoParticipante: true, estadoRecibo: true, estadoInscrito: true })
             .populate('participante')
             .populate('pago')
     ]);
 
-    participantes.forEach(element => {
-        inscripciones.forEach(elementInscripciones => {
-            if (String(element._id) === String(elementInscripciones.participante._id)) {
-                if (inscritos.length === 0) {
-                    inscritos.push(elementInscripciones)
-                } else {
-                    inscritos.forEach(elementInscritos => {
-                        //console.log(elementInscritos);
-                        if (String(elementInscritos.participante._id) !== String(elementInscripciones.participante._id)) {
-                            inscritos.push(elementInscripciones);
-                        }
-                    });
-                }
-            }
-        });
-    });
+    const seen = new Set();
+
+    const filteredInscripciones = inscripciones.filter(el => {
+        const duplicate = seen.has(el.participante._id);
+        seen.add(el.participante._id);
+        return !duplicate;
+    })
 
     const sheet = workbook.addWorksheet('Pagos');
 
@@ -206,7 +193,7 @@ const reportePagos = async function exTest() {
         { header: 'VALOR CANCELADO', key: 'valorCancelado', width: 20 },
     ];
 
-    inscritos.forEach(element => {
+    filteredInscripciones.forEach(element => {
         sheet.addRow({
             participante: `${element.participante.apellidos} ${element.participante.nombres}`,
             numComprobante: element.pago.numeroTransaccion,
@@ -214,7 +201,7 @@ const reportePagos = async function exTest() {
             cliente: `${element.pago.apellidos} ${element.pago.nombres}`,
             numFactura: element.pago.numeroFactura,
             fechaPago: element.pago.fechaTransaccion,
-            valorCancelado: element.costoTotal,
+            valorCancelado: `$ ${element.costoTotal}`,
         });
     });
 

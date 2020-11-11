@@ -35,8 +35,8 @@ exports.sendEmail = async function (req, res) {
                     <h1>Welcome,</h1>
  
                     <p>You have registered with the following information:</p> 
-                    <p>First Names: ${req.nombres}</p> 
-                    <p>Last Names: ${req.apellidos}</p> 
+                    <p><strong>First Names:</strong> ${req.nombres}</p> 
+                    <p><strong>Last Names:</strong> ${req.apellidos}</p> 
                     
                     <p>These data will be used to issuance of participation certificates in the event.</p>
                     <p>To continue, press the button below to verify your email:</p>
