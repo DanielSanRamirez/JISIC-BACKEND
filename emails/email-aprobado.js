@@ -10,7 +10,7 @@ exports.sendEmail = async function (req, res) {
 
     // Definimos el email //https://jisic2021.herokuapp.com/email-confirmation //http://localhost:4200/email-confirmation
     var mailOptions = {
-        from: "'JISIC' <jisic@epn.edu.ec>",
+        from: "'JISIC' <ejemplo@epn.ec>",
         to: req.email, //${req.email}
         subject: 'Registration Confirmation JISIC',
         html: `

@@ -5,8 +5,8 @@ exports.transporterEmails = nodemailer.createTransport({
     port: 587,
     secure: false,
     auth: {
-        user: 'jisic@epn.edu.ec',
-        pass: 'JT2016PFvf'
+        user: 'ejemplo@epn.ec',
+        pass: '254lkhkhiu'
     },
     tls: {
         ciphers: 'SSLv3'
